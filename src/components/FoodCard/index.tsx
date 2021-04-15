@@ -6,23 +6,27 @@ import { Container } from './styles';
 
 import { ToggleAvailableProps } from '../../types';
 
+interface FoodCardProps {
+  onOpenEditFoodModal: (id: number)=> void;
+}
 
-
-export function FoodCard() {
-  const { foods, toggleAvailableFood } = useFood();
-
-  async function toggleAvailable({id, isAvailable}:ToggleAvailableProps ) {
-     await toggleAvailableFood({id, isAvailable});
-  }
+export function FoodCard({onOpenEditFoodModal}: FoodCardProps) {
+  const { foods, deleteFood, toggleAvailableFood } = useFood();
 
   function handleEditFood(id: number) {
-    return;
-  }
-
-  function handleDelete(id: number) {
+    onOpenEditFoodModal(id);
     return;
   }
   
+  function handleDelete(id: number) {
+    deleteFood(id);
+    return;
+  }
+  
+  async function toggleAvailable({id, isAvailable}:ToggleAvailableProps ) {
+  await toggleAvailableFood({id, isAvailable});
+  }
+
   return (
     <>
       {foods.map(food => (
@@ -42,7 +46,7 @@ export function FoodCard() {
               <button
                 type="button"
                 className="icon"
-                onClick={() => handleEditFood(food.id)}
+                onClick={()=>handleEditFood(food.id)}
                 data-testid={`edit-food-${food.id}`}
               >
                 <FiEdit3 size={20} />

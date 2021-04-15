@@ -2,9 +2,13 @@ import { Switch, Route } from 'react-router-dom';
 
 import { Dashboard } from '../pages/Dashboard';
 
-export const Routes = () => (
+interface RoutesProps {
+  onOpenEditFoodModal: (id: number)=> void;
+}
+
+export const Routes = ({onOpenEditFoodModal}:RoutesProps) => (
   <Switch>
-    <Route path="/" exact component={ Dashboard } />
+    <Route path="/" exact render={ ()=> <Dashboard onOpenEditFoodModal={onOpenEditFoodModal}/> }/>
   </Switch>
 );
 

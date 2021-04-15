@@ -12,35 +12,53 @@ import { ModalAddFood } from './components/ModalAddFood';
 import { Routes } from './routes';
 
 import GlobalStyles from './styles/global';
+import { ModalEditFood } from './components/ModalEditFood';
 
 Modal.setAppElement('#root');
 
 
 export function App() {
 
-const [addFoodModalIsOpen, setAddFoodModalIsOpen] = useState(false);
+  const [addFoodModalIsOpen, setAddFoodModalIsOpen] = useState(false);
+  const [editFoodModalIsOpen, setEditFoodModalIsOpen] = useState(false);
+  const [dataId, setDataId] = useState(0);
 
-function handleOpenModalAddFood(){
-  setAddFoodModalIsOpen(true)
-}
+  function handleOpenModalAddFood() {
+    setAddFoodModalIsOpen(true)
+  }
 
-function handleCloseModalAddFood() {
-  setAddFoodModalIsOpen(false);
-}
+  function handleCloseModalAddFood() {
+    setAddFoodModalIsOpen(false);
+  }
+
+  function handleOpenModalEditFood(id: number) {
+    setEditFoodModalIsOpen(true)
+    setDataId(id);
+  }
+
+  function handleCloseModalEditFood() {
+    setEditFoodModalIsOpen(false);
+  }
+
 
   return (
-    <FoodProvider>
-      <Router>
+    <Router>
+      <FoodProvider>
         <GlobalStyles />
-        <Header onOpenAddFoodModal={handleOpenModalAddFood}/>
-        <Routes />
+        <Header onOpenAddFoodModal={handleOpenModalAddFood} />
+        <Routes onOpenEditFoodModal={handleOpenModalEditFood} />
         <ModalAddFood
           isOpen={addFoodModalIsOpen}
           onRequestClose={handleCloseModalAddFood}
         />
+        <ModalEditFood
+          isOpen={editFoodModalIsOpen}
+          onRequestClose={handleCloseModalEditFood}
+          dataId={dataId}
+        />
         <ToastContainer autoClose={3000} />
-      </Router>
-    </FoodProvider>
+      </FoodProvider>
+    </Router>
 
   )
 

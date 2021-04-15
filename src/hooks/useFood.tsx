@@ -9,10 +9,18 @@ interface CartProviderProps {
   children: ReactNode
 }
 
+interface updateFoodProps {
+  id: number;
+  data: FoodInput;
+}
+
 interface FoodContextData {
   foods: Food[];
   addFood: (food: FoodInput) => void;
-  toggleAvailableFood: ({id, isAvailable}: ToggleAvailableProps) => Promise<void>;
+  updateFood: ({ id, data }: updateFoodProps) => void;
+  deleteFood: (id: number) => void;
+  loadFoodFromId: (id: number) => Food;
+  toggleAvailableFood: ({ id, isAvailable }: ToggleAvailableProps) => Promise<void>;
 }
 
 const FoodContext = createContext<FoodContextData>({} as FoodContextData);
@@ -21,12 +29,12 @@ export function FoodProvider({ children }: CartProviderProps) {
   const [foods, setFoods] = useState<Food[]>([]);
 
   useEffect(() => {
-      async function loadFoods(){
-        const apiFoods = await api.get<Food[]>('/foods').then(response => response.data);
-        
-        setFoods(apiFoods);
-      }
-      loadFoods();
+    async function loadFoods() {
+      const apiFoods = await api.get<Food[]>('/foods').then(response => response.data);
+
+      setFoods(apiFoods);
+    }
+    loadFoods();
   }, []);
 
   const addFood = (food: FoodInput) => {
@@ -35,31 +43,73 @@ export function FoodProvider({ children }: CartProviderProps) {
 
   }
 
-  const toggleAvailableFood = async ({id, isAvailable}: ToggleAvailableProps) => {
-   try {
-    const currentFoods = [...foods];
+  const loadFoodFromId = (id: number) => {
+    const loadedFood = foods.find(food => food.id === id);
 
-    const foodExists = currentFoods.find(food => food.id === id);
+    return loadedFood as Food;
+  }
 
-    if(foodExists) {
-      foodExists.available = !isAvailable;
+  const updateFood = async ({ id, data: inputModalData }: updateFoodProps) => {
+    try {
+      const currentFoods = [...foods];
 
-      await api.put<Food>(`/foods/${id}`, {
-        ...foodExists,
-        available: foodExists.available,
-      }).then(response => console.log(response.data));
+      const { name, image, price, description } = inputModalData;
 
-      setFoods(currentFoods);
+      const foodExists = currentFoods.find(food => food.id === id);
+
+      if (foodExists) {
+        foodExists.name = name;
+        foodExists.image = image;
+        foodExists.price = price;
+        foodExists.description = description;
+
+        const updatedData = {...inputModalData, available: foodExists.available }
+
+        const response = await api.put<Food>(`/foods/${id}`, updatedData);
+
+        setFoods(currentFoods);
+        
+        if(response) toast.success('Editado com sucesso');
+
+        return;
+      }
+
+      throw Error;
+
+    } catch {
+      toast.error('Erro ao editar');
     }
-   } catch {
-     toast.error('Erro na alteração de disponibilidade')
-   }
+  }
+
+  const deleteFood = (id: number) => {
+
+  }
+
+  const toggleAvailableFood = async ({ id, isAvailable }: ToggleAvailableProps) => {
+    try {
+      const currentFoods = [...foods];
+
+      const foodExists = currentFoods.find(food => food.id === id);
+
+      if (foodExists) {
+        foodExists.available = !isAvailable;
+
+        await api.put<Food>(`/foods/${id}`, {
+          ...foodExists,
+          available: foodExists.available,
+        }).then(response => console.log(response.data));
+
+        setFoods(currentFoods);
+      }
+    } catch {
+      toast.error('Erro na alteração de disponibilidade')
+    }
   }
 
 
   return (
     <FoodContext.Provider
-      value={{ foods, addFood, toggleAvailableFood }}
+      value={{ foods, loadFoodFromId, addFood, updateFood, deleteFood, toggleAvailableFood }}
     >
       {children}
     </FoodContext.Provider>
