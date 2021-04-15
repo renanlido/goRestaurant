@@ -9,8 +9,6 @@ import Input from '../Input';
 import { ModalAddFoodProps } from '../../types';
 
 
-
-
 export function ModalAddFood({ isOpen, onRequestClose }: ModalAddFoodProps){
   const { addFood } = useFood();
 
