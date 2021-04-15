@@ -6,10 +6,10 @@ import { useFood } from '../../hooks/useFood';
 
 import { Form } from './styles';
 import Input from '../Input';
-import { ModalAddFoodProps } from '../../types';
+import { ModalFoodProps } from '../../types';
 
 
-export function ModalAddFood({ isOpen, onRequestClose }: ModalAddFoodProps){
+export function ModalAddFood({ isOpen, onRequestClose }: ModalFoodProps){
   const { addFood } = useFood();
 
   const [srcImage, setSrcImage] = useState('');

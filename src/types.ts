@@ -14,7 +14,7 @@ export interface ToggleAvailableProps {
   isAvailable: boolean;
 }
 
-export interface ModalAddFoodProps {
+export interface ModalFoodProps {
   isOpen: boolean;
   onRequestClose: ()=> void;
 }
