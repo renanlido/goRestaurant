@@ -11,7 +11,7 @@ export type FoodInput = Omit<Food, 'id'>
 
 export interface ToggleAvailableProps {
   id: number;
-  available: boolean;
+  isAvailable: boolean;
 }
 
 export interface ModalAddFoodProps {
