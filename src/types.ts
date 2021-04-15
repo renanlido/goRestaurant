@@ -13,3 +13,8 @@ export interface ToggleAvailableProps {
   id: number;
   available: boolean;
 }
+
+export interface ModalAddFoodProps {
+  isOpen: boolean;
+  onRequestClose: ()=> void;
+}

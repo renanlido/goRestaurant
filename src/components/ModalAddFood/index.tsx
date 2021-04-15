@@ -6,11 +6,9 @@ import { useFood } from '../../hooks/useFood';
 
 import { Form } from './styles';
 import Input from '../Input';
+import { ModalAddFoodProps } from '../../types';
 
-interface ModalAddFoodProps {
-  isOpen: boolean;
-  onRequestClose: ()=> void;
-}
+
 
 
 export function ModalAddFood({ isOpen, onRequestClose }: ModalAddFoodProps){
