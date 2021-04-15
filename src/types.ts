@@ -7,7 +7,7 @@ export interface Food {
   image: string;
 }
 
-export type FoodInput = Omit<Food, 'id'>
+export type FoodInput = Omit<Food, 'id' >
 
 export interface ToggleAvailableProps {
   id: number;
