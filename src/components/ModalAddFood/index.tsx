@@ -14,7 +14,7 @@ export function ModalAddFood({ isOpen, onRequestClose }: ModalFoodProps){
 
   const [srcImage, setSrcImage] = useState('');
   const [title, setTitle] = useState('');
-  const [price, setPrice] = useState(0);
+  const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
 
   async function handleAddNewFood() {
@@ -54,7 +54,7 @@ export function ModalAddFood({ isOpen, onRequestClose }: ModalFoodProps){
         <Input
           name="price"
           placeholder="Ex: 19.90"
-          onChange={event => setPrice(Number(event.target.value))}
+          onChange={event => setPrice(event.target.value)}
         />
 
         <Input
