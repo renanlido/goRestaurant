@@ -32,8 +32,6 @@ export function ModalAddFood({ isOpen, onRequestClose }: ModalAddFoodProps){
     });
   }
 
-
-
   return (
     <Modal 
       isOpen={isOpen}
