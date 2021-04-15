@@ -12,7 +12,7 @@ interface CartProviderProps {
 interface FoodContextData {
   foods: Food[];
   addFood: (food: FoodInput) => void;
-  toggleAvailableFood: ({id, available}: ToggleAvailableProps) => Promise<void>;
+  toggleAvailableFood: ({id, isAvailable}: ToggleAvailableProps) => Promise<void>;
 }
 
 const FoodContext = createContext<FoodContextData>({} as FoodContextData);
@@ -21,7 +21,12 @@ export function FoodProvider({ children }: CartProviderProps) {
   const [foods, setFoods] = useState<Food[]>([]);
 
   useEffect(() => {
-      api.get<Food[]>('/foods').then(response => setFoods(response.data));
+      async function loadFoods(){
+        const apiFoods = await api.get<Food[]>('/foods').then(response => response.data);
+        
+        setFoods(apiFoods);
+      }
+      loadFoods();
   }, []);
 
   const addFood = (food: FoodInput) => {
@@ -30,20 +35,21 @@ export function FoodProvider({ children }: CartProviderProps) {
 
   }
 
-  const toggleAvailableFood = async ({id, available}: ToggleAvailableProps) => {
+  const toggleAvailableFood = async ({id, isAvailable}: ToggleAvailableProps) => {
    try {
     const currentFoods = [...foods];
 
-    const food = currentFoods.find(food => food.id === id);
-    
-    if(food) {
-      food.available = !available;
-      setFoods(currentFoods);
+    const foodExists = currentFoods.find(food => food.id === id);
+
+    if(foodExists) {
+      foodExists.available = !isAvailable;
 
       await api.put<Food>(`/foods/${id}`, {
-        ...food,
-        available: !food?.available,
-      }).then(response => response.data);
+        ...foodExists,
+        available: foodExists.available,
+      }).then(response => console.log(response.data));
+
+      setFoods(currentFoods);
     }
    } catch {
      toast.error('Erro na alteração de disponibilidade')
