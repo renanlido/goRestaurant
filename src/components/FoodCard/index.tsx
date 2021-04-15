@@ -8,11 +8,11 @@ import { ToggleAvailableProps } from '../../types';
 
 
 
-export function Food() {
+export function FoodCard() {
   const { foods, toggleAvailableFood } = useFood();
 
-  async function toggleAvailable({id, available}:ToggleAvailableProps ) {
-     await toggleAvailableFood({id, available});
+  async function toggleAvailable({id, isAvailable}:ToggleAvailableProps ) {
+     await toggleAvailableFood({id, isAvailable});
   }
 
   function handleEditFood(id: number) {
@@ -66,7 +66,7 @@ export function Food() {
                   id={`available-switch-${food.id}`}
                   type="checkbox"
                   checked={food.available}
-                  onChange={() => toggleAvailable({id: food.id, available: food.available})}
+                  onChange={() => toggleAvailable({id: food.id, isAvailable: food.available})}
                   data-testid={`change-status-food-${food.id}`}
                 />
                 <span className="slider" />
