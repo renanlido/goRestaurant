@@ -3,7 +3,7 @@ import { Switch, Route } from 'react-router-dom';
 import { Dashboard } from '../pages/Dashboard';
 
 interface RoutesProps {
-  onOpenEditFoodModal: (id: number)=> void;
+  onOpenEditFoodModal: (id: string)=> void;
 }
 
 export const Routes = ({onOpenEditFoodModal}:RoutesProps) => (

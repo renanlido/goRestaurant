@@ -21,7 +21,7 @@ export function App() {
 
   const [addFoodModalIsOpen, setAddFoodModalIsOpen] = useState(false);
   const [editFoodModalIsOpen, setEditFoodModalIsOpen] = useState(false);
-  const [dataId, setDataId] = useState(0);
+  const [dataId, setDataId] = useState('');
 
   function handleOpenModalAddFood() {
     setAddFoodModalIsOpen(true)
@@ -31,7 +31,7 @@ export function App() {
     setAddFoodModalIsOpen(false);
   }
 
-  function handleOpenModalEditFood(id: number) {
+  function handleOpenModalEditFood(id: string) {
     setEditFoodModalIsOpen(true)
     setDataId(id);
   }

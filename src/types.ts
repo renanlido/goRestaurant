@@ -1,5 +1,5 @@
 export interface Food {
-  id: number;
+  id: string;
   name: string;
   description: string;
   price: string;
@@ -10,7 +10,7 @@ export interface Food {
 export type FoodInput = Omit<Food, 'id' >
 
 export interface ToggleAvailableProps {
-  id: number;
+  id: string;
   isAvailable: boolean;
 }
 

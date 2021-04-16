@@ -7,18 +7,18 @@ import { Container } from './styles';
 import { ToggleAvailableProps } from '../../types';
 
 interface FoodCardProps {
-  onOpenEditFoodModal: (id: number)=> void;
+  onOpenEditFoodModal: (id: string)=> void;
 }
 
 export function FoodCard({onOpenEditFoodModal}: FoodCardProps) {
   const { foods, deleteFood, toggleAvailableFood } = useFood();
 
-  function handleEditFood(id: number) {
+  function handleEditFood(id: string) {
     onOpenEditFoodModal(id);
     return;
   }
   
-  function handleDelete(id: number) {
+  function handleDelete(id: string) {
     deleteFood(id);
     return;
   }

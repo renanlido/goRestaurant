@@ -10,7 +10,7 @@ import { Form } from './styles';
 import { FoodInput, ModalFoodProps } from '../../types';
 
 interface ModalEditFoodProps extends ModalFoodProps {
-  dataId: number;
+  dataId: string;
 }
 
 export function ModalEditFood({ isOpen, onRequestClose, dataId}: ModalEditFoodProps) {
