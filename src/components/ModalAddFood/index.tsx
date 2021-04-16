@@ -76,29 +76,3 @@ export function ModalAddFood({ isOpen, onRequestClose }: ModalFoodProps){
   );
 
 }
-
-
-
-
-// class ModalAddFood extends Component {
-//   constructor(props) {
-//     super(props);
-
-//     this.formRef = createRef();
-//   }
-
-//   handleSubmit = async data => {
-//     const { setIsOpen, handleAddFood } = this.props;
-
-//     handleAddFood(data);
-//     setIsOpen();
-//   };
-
-//   render() {
-//     const { isOpen, setIsOpen } = this.props;
-
-   
-//   }
-// };
-
-
