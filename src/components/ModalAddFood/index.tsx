@@ -13,19 +13,21 @@ export function ModalAddFood({ isOpen, onRequestClose }: ModalFoodProps){
   const { addFood } = useFood();
 
   const [srcImage, setSrcImage] = useState('');
-  const [title, setTitle] = useState('');
+  const [name, setName] = useState('');
   const [price, setPrice] = useState('');
   const [description, setDescription] = useState('');
 
   async function handleAddNewFood() {
-    
-    await addFood({
-      available: true,
-      description,
+    const food = { 
       image: srcImage,
-      name: title,
-      price
-    });
+      name,
+      available: true,
+      price,
+      description,
+    }
+
+    addFood(food);
+    onRequestClose();
   }
 
   return (
@@ -48,7 +50,7 @@ export function ModalAddFood({ isOpen, onRequestClose }: ModalFoodProps){
         <Input
           name="name"
           placeholder="Ex: Moda Italiana"
-          onChange={event => setTitle(event.target.value)}
+          onChange={event => setName(event.target.value)}
         />
 
         <Input
