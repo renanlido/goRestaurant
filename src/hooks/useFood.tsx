@@ -1,5 +1,6 @@
 import { createContext, ReactNode, useContext, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import { v4 as uuidv4 } from 'uuid';
 
 import { api } from '../services/api';
 
@@ -10,7 +11,7 @@ interface CartProviderProps {
 }
 
 interface updateFoodProps {
-  id: number;
+  id: string;
   data: FoodInput;
 }
 
@@ -18,8 +19,8 @@ interface FoodContextData {
   foods: Food[];
   addFood: (food: FoodInput) => void;
   updateFood: ({ id, data }: updateFoodProps) => void;
-  deleteFood: (id: number) => void;
-  loadFoodFromId: (id: number) => Food;
+  deleteFood: (id: string) => void;
+  loadFoodFromId: (id: string) => Food;
   toggleAvailableFood: ({ id, isAvailable }: ToggleAvailableProps) => Promise<void>;
 }
 
@@ -37,13 +38,34 @@ export function FoodProvider({ children }: CartProviderProps) {
     loadFoods();
   }, []);
 
-  const addFood = (food: FoodInput) => {
+  const addFood = async (food: FoodInput) => {
+    try {
+      const currentFoods = [...foods];
+      const id = uuidv4();
 
-    console.log(food);
+      const newFood = { ...food, id };
+
+      const response = await api.post<Food>(`/foods`, newFood);
+
+      if (response) {
+        currentFoods.push(newFood);
+
+        setFoods(currentFoods);
+
+        toast.success('Prato adicionado com sucesso!');
+
+        return;
+      }
+
+      toast.error('Houve algum erro ao adicionar o produto.');
+    } catch {
+      toast.error('Erro ao adicionar!');
+    }
+
 
   }
 
-  const loadFoodFromId = (id: number) => {
+  const loadFoodFromId = (id: string) => {
     const loadedFood = foods.find(food => food.id === id);
 
     return loadedFood as Food;
@@ -63,13 +85,13 @@ export function FoodProvider({ children }: CartProviderProps) {
         foodExists.price = price;
         foodExists.description = description;
 
-        const updatedData = {...inputModalData, available: foodExists.available }
+        const updatedData = { ...inputModalData, available: foodExists.available }
 
         const response = await api.put<Food>(`/foods/${id}`, updatedData);
 
         setFoods(currentFoods);
-        
-        if(response) toast.success('Editado com sucesso');
+
+        if (response) toast.success('Editado com sucesso');
 
         return;
       }
@@ -81,8 +103,26 @@ export function FoodProvider({ children }: CartProviderProps) {
     }
   }
 
-  const deleteFood = (id: number) => {
+  const deleteFood = (id: string) => {
+    try {
+      const currentFoods = [...foods];
 
+      const foodExists = currentFoods.find(food => food.id === id);
+
+      if (foodExists) {
+        const foodByIndex = currentFoods.findIndex(food => food.id === id);
+
+        currentFoods.splice(foodByIndex, 1);
+
+        api.delete(`/foods/${id}`);
+
+        setFoods(currentFoods);
+
+        toast.success('Prato deletado com sucesso!');
+      }
+    } catch {
+      toast.error('Erro ao deletar prato.');
+    }
   }
 
   const toggleAvailableFood = async ({ id, isAvailable }: ToggleAvailableProps) => {
