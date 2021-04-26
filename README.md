@@ -7,7 +7,7 @@
 <!--LOGO-->
 <br/>
 <div align="center">
-    <a href="">
+    <a href="#">
         <img src="./assets/logo.svg" alt="Logo Ignews">
     </a>
 
